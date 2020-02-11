@@ -1,6 +1,7 @@
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -16,10 +17,12 @@ public class Activitat1 {
 		System.out.println("1. Afegir");
 		System.out.println("2. Modificar");
 		System.out.println("3. Eliminar");
-		System.out.println("4. Sortir");
+		System.out.println("4. Mostrar taula");
+		System.out.println("5. Sortir");
 		return teclat.nextInt();
 	}
 
+	//mètode per fer INSERT a les taules de la db
 	public static void afegir(Statement statement) {
 		Scanner teclat = new Scanner(System.in);
 		String nom;
@@ -34,17 +37,18 @@ public class Activitat1 {
 
 		try {
 			System.out.println("Indica taula");
-			taula = teclat.next();			
+			taula = teclat.nextLine();	
+			//si la taula és la de alumnes..
 			if (taula.equalsIgnoreCase("alumnes")) {
 				System.out.println("dni:");
-				dni = teclat.next();
+				dni = teclat.nextLine();
 				System.out.println("nom:");
 				nom = teclat.nextLine();
 				System.out.println("data naixement:");
-				data = teclat.next();
+				data = teclat.nextLine();
 				System.out.println("direccio:");
 				direccio = teclat.nextLine();
-				System.out.println("nom:");
+				System.out.println("poblacio:");
 				poblacio = teclat.nextLine();
 
 				insert = "insert into alumnes values('" + dni + "','" + nom + "','"
@@ -53,17 +57,19 @@ public class Activitat1 {
 						+ poblacio + "')\r\n" + ");";
 			}
 
+			//si la taula és la de poblacions..
 			if (taula.equalsIgnoreCase("poblacions")) {
 				System.out.println("nom:");
 				poblacio = teclat.nextLine();
-				teclat.next();
+				System.out.println(poblacio);
 				System.out.println("cp");
-				cp = teclat.nextInt();
+				cp = (new Integer(teclat.nextLine())).intValue();
 
 				insert = "insert into poblacions values(" + cp + ", '" + poblacio
 						+ "');";
 			}
-
+			
+			//executa statement
 			statement.execute(insert);
 
 			System.out.println("Vols introduir-ne més? (true/false)");
@@ -77,6 +83,7 @@ public class Activitat1 {
 
 	}
 
+	//mètode per fer UPDATE
 	public static void modificar(Statement statement) {
 		Scanner teclat = new Scanner(System.in);
 		String update = "";
@@ -90,16 +97,18 @@ public class Activitat1 {
 
 		try {
 			System.out.println("Indica taula");
-			taula = teclat.next();
+			taula = teclat.nextLine();
 
+			//si la taula és alumnes..
 			if (taula.equalsIgnoreCase("alumnes")) {
 				System.out.println("Camp a modificar");
-				camp = teclat.next();
+				camp = teclat.nextLine();
+				//si el camp és enter
 				if (camp.equalsIgnoreCase("cp")) {
 					System.out.println("nou valor:");
-					nouValorInt = teclat.nextInt();
+					nouValorInt = (new Integer(teclat.nextLine())).intValue();
 					System.out.println("valor antic:");
-					anticValorInt = teclat.nextInt();
+					anticValorInt = (new Integer(teclat.nextLine())).intValue();
 
 					update = "UPDATE alumnes SET " + camp + " = " + nouValorInt
 							+ " WHERE " + camp + " = " + anticValorInt + ";";
@@ -109,11 +118,12 @@ public class Activitat1 {
 					System.out.println("antic valor:");
 					anticValor = teclat.nextLine();
 
-					update = "UPDATE alumnes SET " + camp + " = " + nouValor
-							+ " WHERE " + camp + " = " + anticValor + ";";
+					update = "UPDATE alumnes SET " + camp + " = '" + nouValor
+							+ "' WHERE " + camp + " = '" + anticValor + "';";
 				}
 			}
 
+			//si la taula és poblacions
 			if (taula.equalsIgnoreCase("poblacions")) {
 
 				System.out.println("nou valor:");
@@ -121,10 +131,11 @@ public class Activitat1 {
 				System.out.println("antic valor:");
 				anticValor = teclat.nextLine();
 
-				update = "UPDATE poblacions SET poblacio = " + nouValor
-						+ " WHERE poblacio = " + anticValor + ";";
+				update = "UPDATE poblacions SET poblacio = '" + nouValor
+						+ "' WHERE poblacio = '" + anticValor + "';";
 			}
 
+			//executa statement
 			statement.execute(update);
 
 			System.out.println("Vols modificar-ne més? (true/false)");
@@ -138,6 +149,7 @@ public class Activitat1 {
 
 	}
 
+	//mètode per fer DELETE
 	public static void eliminar(Statement statement){
 		Scanner teclat = new Scanner(System.in);		
 		String delete = "";
@@ -149,14 +161,13 @@ public class Activitat1 {
 
 		try {
 			System.out.println("Indica taula");
-			taula = teclat.next();
-			
-			
-			System.out.println("Camp");
-			camp = teclat.next();
+			taula = teclat.nextLine();			
+			System.out.println("Camp:");
+			camp = teclat.nextLine();
+			//si el camp és enter
 			if (camp.equalsIgnoreCase("cp")) {
 				System.out.println("valor:");
-				valorInt = teclat.nextInt();				
+				valorInt = (new Integer(teclat.nextLine())).intValue();				
 				
 				delete = "DELETE FROM " + taula + " WHERE " + camp + " = " + valorInt + ";";
 				
@@ -164,9 +175,10 @@ public class Activitat1 {
 				System.out.println("valor:");
 				valor = teclat.nextLine();								
 
-				delete = "DELETE FROM " + taula + " WHERE " + camp + " = " + valor + ";";
+				delete = "DELETE FROM " + taula + " WHERE " + camp + " = '" + valor + "';";
 			}			
 
+			//executa statement
 			statement.execute(delete);
 
 			System.out.println("Vols eliminar-ne més? (true/false)");
@@ -180,6 +192,37 @@ public class Activitat1 {
 		
 	}
 
+	public static void mostrar(Statement statement){
+		Scanner teclat = new Scanner(System.in);
+		String taula;		
+		ResultSet resultSet;
+		
+		try {
+			System.out.println("Indica taula a mostrar:");
+			taula = teclat.nextLine();
+			
+			//recull resultat
+			resultSet = statement.executeQuery("SELECT * FROM " + taula);
+		
+			while (resultSet.next()){
+				if (taula.equalsIgnoreCase("alumnes")) {
+					System.out.println("DNI:= " + resultSet.getObject("dni") +
+										", NOM:= " + resultSet.getObject("nom") +
+										", DATA NAIXEMENT:= " + resultSet.getObject("data_naixement") +
+										", DIRECCIÓ:= " + resultSet.getObject("direccio") +
+										", CP:= " + resultSet.getObject("cp"));
+				}
+				if (taula.equalsIgnoreCase("poblacions")) {
+					System.out.println("CP:= " + resultSet.getObject("cp") +
+										", NOM:= " + resultSet.getObject("poblacio"));
+				}
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public static void main(String[] args) {
 		// variables
 		Connection con = null;
@@ -192,7 +235,6 @@ public class Activitat1 {
 		int opcio;
 		boolean sortir = false;		
 
-		System.out.println("Connexió");
 		try {
 			// carreguem el controlador en memòria
 			Class.forName("com.mysql.jdbc.Driver");
@@ -212,6 +254,7 @@ public class Activitat1 {
 
 			while (!sortir) {
 				// menu
+				System.out.println();
 				opcio = menu();
 				if (opcio == 1) {
 					afegir(statement);
@@ -219,6 +262,8 @@ public class Activitat1 {
 					modificar(statement);
 				} else if (opcio == 3) {
 					eliminar(statement);
+				} else if (opcio == 4){
+					mostrar(statement);
 				} else {
 					con.close();
 					sortir = true;
