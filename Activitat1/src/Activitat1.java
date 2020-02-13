@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Activitat1 {
 
-	// localhost:8081/phpmyadmin
+	// localhost:80/phpmyadmin
 
 	// menu
 	public static int menu() {
@@ -22,7 +22,7 @@ public class Activitat1 {
 		return teclat.nextInt();
 	}
 
-	//mètode per fer INSERT a les taules de la db
+	//mÃ¨tode per fer INSERT a les taules de la db
 	public static void afegir(Statement statement) {
 		Scanner teclat = new Scanner(System.in);
 		String nom;
@@ -38,7 +38,7 @@ public class Activitat1 {
 		try {
 			System.out.println("Indica taula");
 			taula = teclat.nextLine();	
-			//si la taula és la de alumnes..
+			//si la taula Ã©s la de alumnes..
 			if (taula.equalsIgnoreCase("alumnes")) {
 				System.out.println("dni:");
 				dni = teclat.nextLine();
@@ -51,13 +51,13 @@ public class Activitat1 {
 				System.out.println("poblacio:");
 				poblacio = teclat.nextLine();
 
-				insert = "insert into alumnes values('" + dni + "','" + nom + "','"
-						+ data + "','" + direccio + "',(\r\n" + "SELECT cp\r\n"
-						+ "FROM poblacions\r\n" + "WHERE poblacio LIKE '"
+				insert = "insert into alumnes values('" + nom + "','" + dni + "','"
+						+ data + "','" + direccio + "',(\r\n" + "SELECT codi_postal\r\n"
+						+ "FROM Poblacions\r\n" + "WHERE poblacio LIKE '"
 						+ poblacio + "')\r\n" + ");";
 			}
 
-			//si la taula és la de poblacions..
+			//si la taula Ã©s la de poblacions..
 			if (taula.equalsIgnoreCase("poblacions")) {
 				System.out.println("nom:");
 				poblacio = teclat.nextLine();
@@ -72,7 +72,7 @@ public class Activitat1 {
 			//executa statement
 			statement.execute(insert);
 
-			System.out.println("Vols introduir-ne més? (true/false)");
+			System.out.println("Vols introduir-ne mÃ©s? (true/false)");
 			resposta = teclat.nextBoolean();
 			if (resposta) {
 				afegir(statement);
@@ -83,7 +83,7 @@ public class Activitat1 {
 
 	}
 
-	//mètode per fer UPDATE
+	//mÃ¨tode per fer UPDATE
 	public static void modificar(Statement statement) {
 		Scanner teclat = new Scanner(System.in);
 		String update = "";
@@ -99,11 +99,11 @@ public class Activitat1 {
 			System.out.println("Indica taula");
 			taula = teclat.nextLine();
 
-			//si la taula és alumnes..
+			//si la taula Ã©s alumnes..
 			if (taula.equalsIgnoreCase("alumnes")) {
 				System.out.println("Camp a modificar");
 				camp = teclat.nextLine();
-				//si el camp és enter
+				//si el camp Ã©s enter
 				if (camp.equalsIgnoreCase("cp")) {
 					System.out.println("nou valor:");
 					nouValorInt = (new Integer(teclat.nextLine())).intValue();
@@ -123,7 +123,7 @@ public class Activitat1 {
 				}
 			}
 
-			//si la taula és poblacions
+			//si la taula Ã©s poblacions
 			if (taula.equalsIgnoreCase("poblacions")) {
 
 				System.out.println("nou valor:");
@@ -138,7 +138,7 @@ public class Activitat1 {
 			//executa statement
 			statement.execute(update);
 
-			System.out.println("Vols modificar-ne més? (true/false)");
+			System.out.println("Vols modificar-ne mÃ©s? (true/false)");
 			resposta = teclat.nextBoolean();
 			if (resposta) {
 				modificar(statement);
@@ -149,7 +149,7 @@ public class Activitat1 {
 
 	}
 
-	//mètode per fer DELETE
+	//mÃ¨tode per fer DELETE
 	public static void eliminar(Statement statement){
 		Scanner teclat = new Scanner(System.in);		
 		String delete = "";
@@ -164,7 +164,7 @@ public class Activitat1 {
 			taula = teclat.nextLine();			
 			System.out.println("Camp:");
 			camp = teclat.nextLine();
-			//si el camp és enter
+			//si el camp Ã©s enter
 			if (camp.equalsIgnoreCase("cp")) {
 				System.out.println("valor:");
 				valorInt = (new Integer(teclat.nextLine())).intValue();				
@@ -181,7 +181,7 @@ public class Activitat1 {
 			//executa statement
 			statement.execute(delete);
 
-			System.out.println("Vols eliminar-ne més? (true/false)");
+			System.out.println("Vols eliminar-ne mÃ©s? (true/false)");
 			resposta = teclat.nextBoolean();
 			if (resposta) {
 				eliminar(statement);
@@ -208,12 +208,12 @@ public class Activitat1 {
 				if (taula.equalsIgnoreCase("alumnes")) {
 					System.out.println("DNI:= " + resultSet.getObject("dni") +
 										", NOM:= " + resultSet.getObject("nom") +
-										", DATA NAIXEMENT:= " + resultSet.getObject("data_naixement") +
-										", DIRECCIÓ:= " + resultSet.getObject("direccio") +
-										", CP:= " + resultSet.getObject("cp"));
+										", DATA NAIXEMENT:= " + resultSet.getObject("data_naix") +
+										", DIRECCIÃ“:= " + resultSet.getObject("a_postal") +
+										", CP:= " + resultSet.getObject("codi_postal"));
 				}
 				if (taula.equalsIgnoreCase("poblacions")) {
-					System.out.println("CP:= " + resultSet.getObject("cp") +
+					System.out.println("CP:= " + resultSet.getObject("codi_postal") +
 										", NOM:= " + resultSet.getObject("poblacio"));
 				}
 				
@@ -228,7 +228,7 @@ public class Activitat1 {
 		Connection con = null;
 		Driver driver = null;
 		// String url = "jdbc:postgresql://localhost:5432/ioc_proves";
-		String url = "jdbc:mysql://localhost:3306/activitat1";
+		String url = "jdbc:mysql://localhost:3306/alumnes";
 		String usuari = "root";
 		String password = "";
 		Statement statement;
@@ -236,7 +236,7 @@ public class Activitat1 {
 		boolean sortir = false;		
 
 		try {
-			// carreguem el controlador en memòria
+			// carreguem el controlador en memÃ²ria
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException ex) {
 			System.out.println("No s'ha trobat el controlador JDBC ("
@@ -245,9 +245,9 @@ public class Activitat1 {
 		}
 
 		try {
-			// obtenim una connexió des de DriverManager
+			// obtenim una connexiÃ³ des de DriverManager
 			con = DriverManager.getConnection(url, usuari, password);
-			System.out.println("Connexió realitzada usant DriverManager");
+			System.out.println("ConnexiÃ³ realitzada usant DriverManager");
 
 			
 			statement = con.createStatement();
