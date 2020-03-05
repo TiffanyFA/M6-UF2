@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 28/02/2020 17:45:48 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="activitat5.entity.Moviment" table="moviment" catalog="activitat5" optimistic-lock="version">
+        <composite-id name="id" class="activitat5.entity.MovimentId">
+            <key-property name="partidaId" type="int">
+                <column name="partidaId" />
+            </key-property>
+            <key-property name="numMoviment" type="int">
+                <column name="numMoviment" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="partida" class="activitat5.entity.Partida" update="false" insert="false" fetch="select">
+            <column name="partidaId" not-null="true" />
+        </many-to-one>
+        <property name="taulell" type="string">
+            <column name="taulell" length="64" />
+        </property>
+    </class>
+</hibernate-mapping>

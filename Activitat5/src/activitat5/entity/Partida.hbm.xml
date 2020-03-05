@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 28/02/2020 17:45:48 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="activitat5.entity.Partida" table="partida" catalog="activitat5" optimistic-lock="version">
+        <id name="partidaId" type="java.lang.Integer">
+            <column name="partidaId" />
+            <generator class="identity" />
+        </id>
+        <property name="data" type="timestamp">
+            <column name="data" length="19" />
+        </property>
+        <property name="guanyador" type="string">
+            <column name="guanyador" length="4" />
+        </property>
+        <set name="moviments" table="moviment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="partidaId" not-null="true" />
+            </key>
+            <one-to-many class="activitat5.entity.Moviment" />
+        </set>
+    </class>
+</hibernate-mapping>
