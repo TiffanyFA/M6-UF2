@@ -1,0 +1,3 @@
+Si peta el codi al desar comentar la linia 
+session.save(win)
+és la que hauria de desar el guanyador en la bd però no s'ha pogut provar si funciona bé
