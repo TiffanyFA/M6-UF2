@@ -172,8 +172,7 @@ public class PartidaAnterior extends javax.swing.JFrame {
             int c = 0;
             //Per recuperar un objecte per clau primària (id):
             //Clase objeto = factory.getCurrentSession().get(Clase.class, id);
-            //Object movimentRecuperat = sessionFactory.get(Moviment.class, idSolicitat);
-
+            
             //Per recuperar un conjunt d’objectes segons consulta:
             Moviment moviment = new Moviment();
             session = HibernateUtil.getSessionFactory().openSession();
@@ -183,10 +182,9 @@ public class PartidaAnterior extends javax.swing.JFrame {
             
             List<String> moviments = query.list();          
             
-            //recoperar moviments            
+            //recuperar moviments            
             while (x < moviments.size()){
-                //moviment = moviments.get(x);
-                String lletres = moviments.get(x);//moviment.getTaulell();
+                String lletres = moviments.get(x);
                 c = 0;
                 for (int i = 0; i < taulellRecuperat.getRowCount(); i++) {
                     for (int j = 0; j < taulellRecuperat.getColumnCount(); j++) {

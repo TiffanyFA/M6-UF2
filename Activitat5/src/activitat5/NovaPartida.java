@@ -203,7 +203,7 @@ public class NovaPartida extends javax.swing.JFrame {
     public int obtenirColumnaClicada(){
         return taulell.getSelectedColumn();
     }
-
+    //----------------------------mètodes del pseudocpdi------------------------------
     public boolean noHiHaOrigen(){
         if (filaOrigen == -1){
             return true;
@@ -231,17 +231,9 @@ public class NovaPartida extends javax.swing.JFrame {
 
     public boolean movimentVàlid(int fila, int columna){
         if (jugaX){
-            if((fila == filaOrigen + 1) && (columna == columnaOrigen + 1 || columna == columnaOrigen - 1)){
-                return true;
-            }else{
-                return false;
-            }
+            return ((fila == filaOrigen + 1) && (columna == columnaOrigen + 1 || columna == columnaOrigen - 1));
         }else{
-            if((fila == filaOrigen - 1) && (columna == columnaOrigen + 1 || columna == columnaOrigen - 1)){
-                return true;
-            }else{
-                return false;
-            }
+            return ((fila == filaOrigen - 1) && (columna == columnaOrigen + 1 || columna == columnaOrigen - 1));
         }
     }
 
@@ -307,14 +299,16 @@ public class NovaPartida extends javax.swing.JFrame {
     public boolean acaba(int fila){
         //Alguna fitxa X arriba al final del tauler. Guanya X || X elimina totes les fitxes O. Guanya X.
         if(jugaX && fila == 7 || eliminaContrincant("O")){
-            guanyador = "X";
+            partida.setGuanyador("X");
             return true;
         }
         //Alguna fitxa O arriba a dalt del tauler. Guanya O || O elimina totes les fitxes X. Guanya O
         if(jugaO && fila == 0 || eliminaContrincant("X")){
-            guanyador = "O";
+            partida.setGuanyador("O");
             return true;
-        }     
+        }
+        //guardar moviments en bd
+        desarEnBD();     
         
         return false;
     }
@@ -329,12 +323,7 @@ public class NovaPartida extends javax.swing.JFrame {
                }
            }
         }
-        if(countLletra == 0){
-            guanyador = lletra;
-            return true;
-        }else{
-            return false;
-        }
+        return (countLletra == 0);
     }
     
     public void desarEnBD(){
@@ -352,6 +341,7 @@ public class NovaPartida extends javax.swing.JFrame {
             session.save(partida);
             session.getTransaction().commit();
             }
+        String win = getGuanyador();    
         
         MovimentId mid = new MovimentId(partida.getPartidaId(),countMov);
         Moviment m = new Moviment(mid,partida,taulellMoviments);
@@ -360,6 +350,7 @@ public class NovaPartida extends javax.swing.JFrame {
         
          session.beginTransaction();
          session.save(m);
+         session.save(win);
          session.getTransaction().commit();
         
         //tancar sessió
